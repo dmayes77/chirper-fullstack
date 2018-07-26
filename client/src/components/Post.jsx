@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Chirps from './Chirps';
 
+let url = '/api/chirps/';
+
 class Post extends Component {
 	constructor(props) {
 		super(props);
@@ -18,17 +20,46 @@ class Post extends Component {
 		};
 
 		this.addChirp = () => {
-			fetch('/api/chirps')
+			fetch(url)
 				.then(response => response.json())
 				.then(chirpsData => {
 					this.setState({ chirps: chirpsData });
 				});
 		};
-		this.deleteChirp = this.deleteChirp.bind(this);
+
+		this.newChirp = () => {
+			fetch(url, {
+				method: 'POST',
+				body: JSON.stringify({
+					name: this.state.name,
+					chirp: this.state.chirp
+				}),
+				headers: new Headers({ 'Content-Type': 'application/json' })
+			}).then(postChirp => this.addChirp(postChirp));
+		};
+
+		this.updateChirp = () => {
+			$('.list-group').on('click', 'span', function() {
+				console.log('clicked');
+			});
+		};
+
+		this.deleteChirp = () => {
+			$('.list-group').on('click', 'button', function() {
+				fetch(url + this.id, {
+					method: 'DELETE'
+				}).then(() => {
+					$(this)
+						.parent()
+						.remove();
+				});
+			});
+		};
 	}
 
 	componentDidMount() {
 		this.addChirp();
+		this.updateChirp();
 		this.deleteChirp();
 	}
 
@@ -42,35 +73,10 @@ class Post extends Component {
 
 	handleForm(event) {
 		event.preventDefault();
-		fetch('/api/chirps', {
-			method: 'POST',
-			body: JSON.stringify({
-				name: this.state.name,
-				chirp: this.state.chirp
-			}),
-			headers: new Headers({ 'Content-Type': 'application/json' })
-		}).then(newChirp => this.addChirp(newChirp));
+		this.newChirp();
 		this.clearForm();
 	}
 
-	deleteChirp() {
-		$('.list-group').on('click', 'button', function() {
-			console.log(
-				$(this)
-					.parent()
-					.data('id')
-			);
-			// fetch(url, {
-			// 	method: 'DELETE',
-			// 	headers: new Headers({ 'Content-Type': 'application/json' })
-			// });
-		});
-	}
-	// let url = '/api/chirps/' + this.props.match.params.id;
-	// fetch(url, {
-	// 	method: 'DELETE',
-	// 	headers: new Headers({ 'Content-Type': 'application/json' })
-	// }).then(this.props.history.push('/'));
 	render() {
 		return (
 			<React.Fragment>

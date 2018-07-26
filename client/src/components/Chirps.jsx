@@ -16,6 +16,7 @@ class Chirps extends Component {
 											name={chirp.name}
 											chirp={chirp.chirp}
 											key={chirp._id}
+											id={chirp._id}
 										/>
 									);
 								})}
