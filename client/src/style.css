@@ -35,7 +35,3 @@ li:hover .btn {
 	opacity: 1;
 	cursor: pointer;
 }
-
-li:hover span {
-	cursor: pointer;
-}
