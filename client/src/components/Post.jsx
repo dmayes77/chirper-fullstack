@@ -60,7 +60,7 @@ class Post extends Component {
 	render() {
 		return (
 			<React.Fragment>
-				<div className="col-8 offset-2">
+				<div className="col-6 offset-3">
 					<button
 						type="button"
 						className="btn btn-primary float-right"
