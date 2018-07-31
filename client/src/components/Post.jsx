@@ -37,40 +37,10 @@ class Post extends Component {
 				headers: new Headers({ 'Content-Type': 'application/json' })
 			}).then(postChirp => this.addChirp(postChirp));
 		};
-
-		this.updateChirp = () => {
-			$('.list-group').on('dblclick', 'li', function() {
-				console.log(this.id);
-				// event.preventDefault();
-				// fetch(url + this.id, {
-				// 	method: 'PUT',
-				// 	body: JSON.stringify({
-				// 		chirp: this.value
-				// 	}),
-				// 	headers: new Headers({
-				// 		'Content-Type': 'application/json'
-				// 	})
-				// }).then(this.addChirp());
-			});
-		};
-
-		this.deleteChirp = () => {
-			$('.list-group').on('click', '.btn-danger', function() {
-				fetch(url + this.id, {
-					method: 'DELETE'
-				}).then(() => {
-					$(this)
-						.parent()
-						.remove();
-				});
-			});
-		};
 	}
 
 	componentDidMount() {
 		this.addChirp();
-		this.updateChirp();
-		this.deleteChirp();
 	}
 
 	onInputName(value) {

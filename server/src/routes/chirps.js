@@ -1,17 +1,28 @@
-const express = require('express');
-const db = require('../models');
+import { Router } from 'express';
+import db from '../db';
 
-let router = express.Router();
+let router = Router();
 
 //Index Route - list all chirps
-router.get('/', (req, res) => {
-	db.Chirp.find()
+router.get('/:id?', (req, res) => {
+	let id = req.params.id;
+	if (id) {
+		db.Chirp.findById(id)
+			.then(foundChirp => {
+				res.json(foundChirp);
+			})
+			.catch(err => {
+				res.send(err);
+			});
+	} else {
+		db.Chirp.find()
 		.then(chirps => {
 			res.json(chirps);
 		})
 		.catch(err => {
 			res.send(err);
 		});
+	}
 });
 
 //Create Route - create a new chirp
@@ -25,19 +36,8 @@ router.post('/', (req, res) => {
 		});
 });
 
-//Show Route - show info about one specific chirp
-router.get('/:id', (req, res) => {
-	db.Chirp.findById(req.params.id)
-		.then(foundChirp => {
-			res.json(foundChirp);
-		})
-		.catch(err => {
-			res.send(err);
-		});
-});
-
 //Update Route - update a specific chirp
-router.put('/:id', (req, res) => {
+router.put('/:id/edit', (req, res) => {
 	db.Chirp.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
 		.then(updatedChirp => {
 			res.json(updatedChirp);

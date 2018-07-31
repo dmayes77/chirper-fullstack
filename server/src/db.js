@@ -5,5 +5,5 @@ mongoose.connect('mongodb://localhost/chirps-api');
 
 mongoose.Promise = Promise;
 
-module.exports.Chirp = require('./chirp');
+module.exports.Chirp = require('../src/models/chirp');
 
