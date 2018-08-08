@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import Table from '../table';
-let router = Router();
 
+let router = Router();
 let chirps = new Table('chirps');
 
 //Get one or all chirps
