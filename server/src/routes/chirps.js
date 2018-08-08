@@ -1,61 +1,45 @@
 import { Router } from 'express';
-import db from '../db';
-
+import Table from '../table';
 let router = Router();
 
-//Index Route - list all chirps
+let chirps = new Table('chirps');
+
+//Get one or all chirps
 router.get('/:id?', (req, res) => {
 	let id = req.params.id;
 	if (id) {
-		db.Chirp.findById(id)
-			.then(foundChirp => {
-				res.json(foundChirp);
-			})
-			.catch(err => {
-				res.send(err);
-			});
+		chirps.getOne(id).then(chirp => {
+			res.json(chirp);
+		});
 	} else {
-		db.Chirp.find()
-		.then(chirps => {
+		chirps.getAll().then(chirps => {
 			res.json(chirps);
-		})
-		.catch(err => {
-			res.send(err);
 		});
 	}
 });
 
-//Create Route - create a new chirp
+//Creat new chirp
 router.post('/', (req, res) => {
-	db.Chirp.create(req.body)
-		.then(newChirp => {
-			res.status(201).json(newChirp);
-		})
-		.catch(err => {
-			res.send(err);
-		});
+	let chirp = req.body;
+	chirps.insert(chirp).then(id => {
+		res.json(id);
+	});
 });
 
-//Update Route - update a specific chirp
-router.put('/:id/edit', (req, res) => {
-	db.Chirp.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
-		.then(updatedChirp => {
-			res.json(updatedChirp);
-		})
-		.catch(err => {
-			res.send(err);
-		});
+//Update a particular chirp
+router.put('/:id', (req, res) => {
+	let id = req.params.id;
+	chirps.update(id, req.body, {new: true}).then(results => {
+		res.json(results);
+	});
 });
 
-//Delete Route - delete a specific chirp
+//Delete a particular chirp
 router.delete('/:id', (req, res) => {
-	db.Chirp.remove({ _id: req.params.id })
-		.then(() => {
-			res.sendStatus(200);
-		})
-		.catch(err => {
-			res.send(err);
-		});
+	let id = req.params.id;
+	chirps.delete(id).then(() => {
+		res.sendStatus(200);
+	});
 });
 
-module.exports = router;
+export default router;
