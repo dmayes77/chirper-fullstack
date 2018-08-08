@@ -6,3 +6,4 @@ ENV_VAR
 **/env/development.js
 development.js
 .DS_Store
+.babelrc
