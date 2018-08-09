@@ -1,8 +1,14 @@
 import { Router } from 'express';
 import Table from '../table';
+import { isLoggedIn } from '../middleware/auth.mw';
+
 let router = Router();
 
 let users = new Table('users');
+
+router.get('/me', isLoggedIn, (req, res) => {
+	res.json(req.user);
+})
 
 router.get('/:id?', (req, res) => {
 	let id = req.params.id;
@@ -34,9 +40,9 @@ router.put('/:id/edit', (req, res) => {
 router.delete("/:id", (req, res) => {
 	let id = req.params.id;
 	users.delete(id)
-	.then(() => {
-		res.sendStatus(200);
-	})
+		.then(() => {
+			res.sendStatus(200);
+		})
 });
 
 export default router;

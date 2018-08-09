@@ -2,44 +2,63 @@ import { Router } from 'express';
 import Table from '../table';
 
 let router = Router();
-let chirps = new Table('chirps');
+let chirpsTable = new Table('chirps');
 
-//Get one or all chirps
-router.get('/:id?', (req, res) => {
-	let id = req.params.id;
-	if (id) {
-		chirps.getOne(id).then(chirp => {
-			res.json(chirp);
-		});
-	} else {
-		chirps.getAll().then(chirps => {
-			res.json(chirps);
-		});
+router.get('/', async (req, res) => {
+	console.log(req.user);
+	try {
+		let classes = await chirpsTable.getAll()
+		res.json(classes);
+	} catch (err) {
+		console.log(err);
+		res.sendStatus(500);
 	}
 });
 
-//Creat new chirp
-router.post('/', (req, res) => {
-	let chirp = req.body;
-	chirps.insert(chirp).then(id => {
-		res.json(id);
-	});
+router.post('/', async (req, res) => {
+	try {
+		// idObj will look like { id: 7 }
+		let idObj = await chirpsTable.insert({
+			name: req.body.name,
+			description: req.body.description
+		});
+		res.status(201).json(idObj);
+	} catch (err) {
+		console.log(err);
+		res.sendStatus(500);
+	}
 });
 
-//Update a particular chirp
-router.put('/:id', (req, res) => {
-	let id = req.params.id;
-	chirps.update(id, req.body, {new: true}).then(results => {
-		res.json(results);
-	});
+router.get('/:id', async (req, res) => {
+	try {
+		let foundClass = await chirpsTable.getOne(req.params.id);
+		res.json(foundClass);
+	} catch (err) {
+		console.log(err);
+		res.sendStatus(500);
+	}
 });
 
-//Delete a particular chirp
-router.delete('/:id', (req, res) => {
-	let id = req.params.id;
-	chirps.delete(id).then(() => {
+router.put('/:id', async (req, res) => {
+	try {
+		// not concerned about getting a value back, just waiting on update to finish
+		await chirpsTable.update(req.params.id, req.body);
 		res.sendStatus(200);
-	});
+	} catch (err) {
+		console.log(err);
+		res.sendStatus(500);
+	}
+});
+
+router.delete('/:id', async (req, res) => {
+	try {
+		// not concerned about getting a value back, just waiting on delete to finish
+		await chirpsTable.delete(req.params.id);
+		res.sendStatus(200);
+	} catch (err) {
+		console.log(err);
+		res.sendStatus(500);
+	}
 });
 
 export default router;

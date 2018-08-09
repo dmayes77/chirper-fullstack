@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './home';
 import ShowChirp from './showChirp';
 import EditChirp from './editChirp';
+import Login from './auth/login';
+import Logout from './auth/logout';
 
 class App extends Component {
 	render() {
@@ -18,6 +20,8 @@ class App extends Component {
 							<Route exact path="/chirps" component={Home} />
 							<Route exact path="/chirps/:id" component={ShowChirp} />
 							<Route exact path="/chirps/:id/edit" component={EditChirp} />
+							<Route path="/login" component={Login} />
+							<Route path="/logout" component={Logout} />
 						</Switch>
 					</main>
 				</Fragment>
