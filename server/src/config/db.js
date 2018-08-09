@@ -8,54 +8,39 @@ let pool = mysql.createPool({
 	database: "dbchirpr"
 });
 
-function executeQuery(sql, args = []) {
-	return getConnection().then(connection => {
-		return new Promise((resolve, reject) => {
-			connection.query(sql, args, (err, result) => {
-				connection.release();
-				if (err) {
-					reject(err);
-				} else {
-					resolve(result);
-				}
-			});
-		});
-	});
+async function executeQuery(sql, args = []) {
+	let connection = await getConnection();
+	return sendQueryToDB(connection, sql, args);
 }
 
 function callProcedure(procedureName, args = []) {
 	let placeholders = generatePlaceholders(args);
-	let callString = `CALL(${procedureName}(${placeholders});`; // CALL GetChirps();, or CALL InsertChirp(?,?,?);
+	let callString = `CALL ${procedureName}(${placeholders});`; // CALL GetChirps();, or CALL InsertChirp(?,?,?);
 	return executeQuery(callString, args);
 }
 
-function rows(procedureName, args = []) {
-	return callProcedure(procedureName, args).then(resultsets => {
-		return resultsets[0];
-	});
+async function rows(procedureName, args = []) {
+	let resultsets = await callProcedure(procedureName, args);
+	return resultsets[0];
 }
 
-function row(procedureName, args = []) {
-	return callProcedure(procedureName, args).then(resultsets => {
-		return resultsets[0][0];
-	});
+async function row(procedureName, args = []) {
+	let resultsets = await callProcedure(procedureName, args);
+	return resultsets[0][0];
 }
 
-function empty(procedureName, args = []) {
-	return callProcedure(procedureName, args).then(() => {
-		return;
-	});
+async function empty(procedureName, args = []) {
+	await callProcedure(procedureName, args);
 }
 
 function generatePlaceholders(args = []) {
-	let placeholders = "";
+	let placeholders = '';
 	if (args.length > 0) {
 		for (let i = 0; i < args.length; i++) {
-			if (i === args.length - 1) {
-				// if we are on the last argument in the array
-				placeholders += "?";
+			if (i === args.length - 1) { // if we are on the last argument in the array
+				placeholders += '?';
 			} else {
-				placeholders += "?,";
+				placeholders += '?,';
 			}
 		}
 	}
@@ -69,6 +54,19 @@ function getConnection() {
 				reject(err);
 			} else {
 				resolve(connection);
+			}
+		});
+	});
+}
+
+function sendQueryToDB(connection, sql, args = []) {
+	return new Promise((resolve, reject) => {
+		connection.query(sql, args, (err, result) => {
+			connection.release();
+			if (err) {
+				reject(err);
+			} else {
+				resolve(result);
 			}
 		});
 	});
