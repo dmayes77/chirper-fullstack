@@ -7,6 +7,8 @@ import PrivateRoute from './auth/privateRoute';
 import Login from './auth/login';
 import Logout from './auth/logout';
 import AuthButton from './auth/authButton';
+import 'isomorphic-fetch';
+import 'es6-promise';
 
 class App extends Component {
 	render() {
@@ -19,8 +21,8 @@ class App extends Component {
 						</div>
 						<AuthButton />
 						<Switch>
-							<Route exact path="/" component={Home} />
 							{/* Will eventually become a landing page */}
+							<Route exact path="/" component={Home} />
 							<Route exact path="/chirps" component={Home} />
 							<PrivateRoute exact path="/chirps/:id" component={ShowChirp} />
 							<PrivateRoute

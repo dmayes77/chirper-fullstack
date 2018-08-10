@@ -1,37 +1,23 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
+import * as chirpService from '../services/chirps';
 import moment from 'moment';
 import 'isomorphic-fetch';
 import 'es6-promise';
 
-let url = '/api/chirps/';
-
 class Chirps extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			id: '',
-			chirps: []
-		};
-
-		this.addChirp = () => {
-			fetch(url)
-				.then(response => response.json())
-				.then(chirps => {
-					this.setState({ chirps });
-				});
-		};
 	}
 
 	componentDidMount() {
-		this.addChirp();
+		chirpService.all().then(chirps => {
+			this.setState({ chirps });
+		});
 	}
 
 	handleDelete(evt) {
-		console.log('clicked');
-		fetch(`/api/chirps/${evt.target.id}`, {
-			method: 'DELETE'
-		});
+		chirpService.destroy(evt.target.id);
 		location.reload();
 	}
 

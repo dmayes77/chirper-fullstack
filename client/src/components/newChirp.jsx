@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
+import * as chirpService from '../services/chirps';
+import 'isomorphic-fetch';
+import 'es6-promise';
 
-let url = '/api/chirps/';
 class NewChirp extends Component {
 	constructor(props) {
 		super(props);
@@ -9,36 +11,11 @@ class NewChirp extends Component {
 			chirps: []
 		};
 
-		// this.handleChange = this.handleChange.bind(this);
-		// this.handleForm = this.handleForm.bind(this);
-
 		this.clearForm = () => {
 			this.setState({
 				content: ''
 			});
 		};
-
-		this.addChirp = () => {
-			fetch(url)
-				.then(response => response.json())
-				.then(chirps => {
-					this.setState({ chirps });
-				});
-		};
-
-		this.newChirp = () => {
-			fetch(url, {
-				method: 'POST',
-				body: JSON.stringify({
-					content: this.state.content
-				}),
-				headers: new Headers({ 'Content-Type': 'application/json' })
-			}).then(postChirp => this.addChirp(postChirp));
-		};
-	}
-
-	componentDidMount() {
-		this.clearForm();
 	}
 
 	handleInput(evt) {
@@ -47,7 +24,8 @@ class NewChirp extends Component {
 
 	handleForm(evt) {
 		evt.preventDefault();
-		this.newChirp();
+		chirpService.insert({ content: this.state.content });
+		this.clearForm();
 		location.reload();
 	}
 

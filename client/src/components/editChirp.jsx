@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
+import * as chirpService from '../services/chirps';
 import moment from 'moment';
 import 'isomorphic-fetch';
 import 'es6-promise';
@@ -11,32 +12,12 @@ class EditChirp extends Component {
 			value: props.location.state.content, //passed in from Edit Link
 			chirps: []
 		};
-		console.log(this.state.value);
-		this.handleChange = this.handleChange.bind(this);
-		this.url = `/api/chirps/${this.props.match.params.id}`;
-
-		this.addChirp = () => {
-			fetch(this.url)
-				.then(response => response.json())
-				.then(chirps => {
-					this.setState({ chirps });
-				});
-		};
-
-		this.editChirp = () => {
-			fetch(this.url, {
-				method: 'Put',
-				body: JSON.stringify({
-					content: this.state.value
-				}),
-				new: true,
-				headers: new Headers({ 'Content-Type': 'application/json' })
-			}).then(postChirp => this.addChirp(postChirp));
-		};
 	}
 
 	componentDidMount() {
-		this.addChirp();
+		chirpService.one(this.props.match.params.id).then(chirp => {
+			this.setState({ chirps: chirp });
+		});
 	}
 	handleChange(evt) {
 		this.setState({ value: evt.target.value });
@@ -44,7 +25,9 @@ class EditChirp extends Component {
 
 	handleForm(evt) {
 		evt.preventDefault();
-		this.editChirp();
+		chirpService.update(this.props.match.params.id, {
+			content: this.state.value
+		});
 		this.props.history.push('/');
 		location.reload();
 	}
@@ -68,7 +51,7 @@ class EditChirp extends Component {
 										value={this.state.value}
 										maxLength="150"
 										className="form-control"
-										onChange={this.handleChange}
+										onChange={e => this.handleChange(e)}
 										required
 									/>
 								</div>

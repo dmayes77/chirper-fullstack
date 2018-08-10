@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
+import * as chirpService from '../services/chirps';
 import moment from 'moment';
 import 'isomorphic-fetch';
 import 'es6-promise';
@@ -7,16 +8,15 @@ import 'es6-promise';
 class ShowChirp extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { chirps: [] };
-		this.url = `/api/chirps/${this.props.match.params.id}`;
+		this.state = {
+			chirps: []
+		};
 	}
 
 	componentDidMount() {
-		fetch(this.url)
-			.then(result => result.json())
-			.then(chirp => {
-				this.setState({ chirps: chirp });
-			});
+		chirpService.one(this.props.match.params.id).then(chirp => {
+			this.setState({ chirps: chirp });
+		});
 	}
 
 	render() {
