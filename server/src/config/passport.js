@@ -3,9 +3,10 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as BearerStrategy } from 'passport-http-bearer';
 import Table from '../table';
 import { encode, decode } from '../utils/tokens';
+import {checkPassword} from '../utils/security'
 
-let usersTable = new Table('Users');
-let tokensTable = new Table('Tokens');
+let usersTable = new Table('users');
+let tokensTable = new Table('tokens');
 
 function configurePassport(app) {
     passport.use(new LocalStrategy({
@@ -16,16 +17,25 @@ function configurePassport(app) {
         try {
             // array destructuring. find() will return an array of results.
             // destructuring the first (and hopefully only) result into the user variable
-            let [user] = await usersTable.find({ email });
-            if (user && user.password && user.password === password) {
-                let idObj = await tokensTable.insert({
-                    userid: user.id
-                });
-                let token = encode(idObj.id);
-                return done(null, { token });
-            } else {
-                return done(null, false, { message: 'Invalid credentials' });
-            }
+						let [user] = await usersTable.find({ email });
+						if (user && user.hash) {
+							checkPassword(password, user.hash)
+							.then((matches) => {
+								if (matches) {
+									let idObj = tokensTable.insert({
+										userid: user.id
+									});
+									let token = encode(idObj.id);
+									return done(null, { token });
+								} else {
+									return done(null, false, { message: 'Invalid credential' });
+								}
+								}).catch((err) => {
+									throw err;
+								});
+						} else {
+							return done(null, false, { message: 'Invalid credentials' });
+						}
         } catch (err) {
             return done(err);
         }
