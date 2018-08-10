@@ -9,18 +9,18 @@ class ShowChirp extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			chirps: []
+			chirp: []
 		};
 	}
 
 	componentDidMount() {
 		chirpService.one(this.props.match.params.id).then(chirp => {
-			this.setState({ chirps: chirp });
+			this.setState({ chirp });
 		});
 	}
 
 	render() {
-		let chirp = this.state.chirps;
+		const { chirp } = this.state;
 		return (
 			<Fragment>
 				<div className="container">

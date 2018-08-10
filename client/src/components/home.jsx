@@ -20,6 +20,7 @@ class Home extends Component {
 	}
 
 	render() {
+		const { chirps } = this.state;
 		return (
 			<Fragment>
 				<div className="container">
@@ -27,7 +28,7 @@ class Home extends Component {
 					<h3 className="my-4">Recent Posts</h3>
 					<div className="container">
 						<div id="list" className="list-group d-flex flex-column-reverse">
-							{this.state.chirps.map(chirp => {
+							{chirps.map(chirp => {
 								return <IndexChirps key={chirp.id} chirp={chirp} />;
 							})}
 						</div>

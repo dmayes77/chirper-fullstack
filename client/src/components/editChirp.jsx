@@ -9,16 +9,17 @@ class EditChirp extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			value: props.location.state.content, //passed in from Edit Link
-			chirps: []
+			value: props.location.state.content, //passed in from Edit Link in showChirp
+			chirp: []
 		};
 	}
 
 	componentDidMount() {
 		chirpService.one(this.props.match.params.id).then(chirp => {
-			this.setState({ chirps: chirp });
+			this.setState({ chirp });
 		});
 	}
+
 	handleChange(evt) {
 		this.setState({ value: evt.target.value });
 	}
@@ -33,7 +34,7 @@ class EditChirp extends Component {
 	}
 
 	render() {
-		let chirp = this.state.chirps;
+		const { chirp } = this.state;
 		return (
 			<Fragment>
 				<div className="container">

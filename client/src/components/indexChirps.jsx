@@ -22,7 +22,7 @@ class Chirps extends Component {
 	}
 
 	render() {
-		let chirp = this.props.chirp;
+		const { chirp } = this.props;
 		return (
 			<Fragment>
 				<div className="card mb-3">
