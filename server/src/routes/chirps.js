@@ -19,8 +19,7 @@ router.post('/', async (req, res) => {
 	try {
 		// idObj will look like { id: 7 }
 		let idObj = await chirpsTable.insert({
-			name: req.body.name,
-			description: req.body.description
+			content: req.body.content,
 		});
 		res.status(201).json(idObj);
 	} catch (err) {

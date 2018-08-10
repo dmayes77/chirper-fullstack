@@ -34,7 +34,14 @@ class ShowChirp extends Component {
 							<h6 className="card-text">{chirp.content}</h6>
 						</div>
 						<div className="card-footer">
-							<Link to={`/chirps/${chirp.id}/edit`}>Edit</Link>
+							<Link
+								to={{
+									pathname: `/chirps/${chirp.id}/edit`,
+									state: { content: chirp.content }
+								}}
+							>
+								Edit
+							</Link>
 						</div>
 					</div>
 				</div>

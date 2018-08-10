@@ -7,7 +7,12 @@ import 'es6-promise';
 class EditChirp extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { chirps: [] };
+		this.state = {
+			value: props.location.state.content, //passed in from Edit Link
+			chirps: []
+		};
+		console.log(this.state.value);
+		this.handleChange = this.handleChange.bind(this);
 		this.url = `/api/chirps/${this.props.match.params.id}`;
 
 		this.addChirp = () => {
@@ -22,7 +27,7 @@ class EditChirp extends Component {
 			fetch(this.url, {
 				method: 'Put',
 				body: JSON.stringify({
-					content: this.state.content
+					content: this.state.value
 				}),
 				new: true,
 				headers: new Headers({ 'Content-Type': 'application/json' })
@@ -33,8 +38,8 @@ class EditChirp extends Component {
 	componentDidMount() {
 		this.addChirp();
 	}
-	handleInput(evt) {
-		this.setState({ [evt.target.name]: evt.target.value });
+	handleChange(evt) {
+		this.setState({ value: evt.target.value });
 	}
 
 	handleForm(evt) {
@@ -60,16 +65,19 @@ class EditChirp extends Component {
 								<div className="form-group">
 									<input
 										name="content"
+										value={this.state.value}
 										maxLength="150"
 										className="form-control"
-										placeholder={chirp.content}
-										onChange={e => this.handleInput(e)}
+										onChange={this.handleChange}
 										required
 									/>
 								</div>
 							</form>
 						</div>
 						<div className="card-footer">
+							<Link to={`/chirps/${chirp.id}`}>
+								<i className="fas fa-angle-double-left" /> Cancel
+							</Link>
 							<button
 								type="submit"
 								className="btn btn-primary btn-sm float-right"
