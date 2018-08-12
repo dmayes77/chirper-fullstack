@@ -1,5 +1,8 @@
 import { Router } from 'express';
+import { Redirect } from 'react-router-dom';
 import Table from '../table';
+import { callProcedure } from '../config/db';
+import { isLoggedIn } from '../middleware/auth.mw';
 
 let router = Router();
 let chirpsTable = new Table('chirps');
@@ -7,8 +10,8 @@ let chirpsTable = new Table('chirps');
 router.get('/', async (req, res) => {
 	console.log(req.user);
 	try {
-		let classes = await chirpsTable.getAll()
-		res.json(classes);
+		let chirps = await chirpsTable.getAll();
+		res.json(chirps);
 	} catch (err) {
 		console.log(err);
 		res.sendStatus(500);
@@ -18,9 +21,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
 	try {
 		// idObj will look like { id: 7 }
-		let idObj = await chirpsTable.insert({
-			content: req.body.content,
-		});
+		let idObj = await chirpsTable.insert(req.body);
 		res.status(201).json(idObj);
 	} catch (err) {
 		console.log(err);
@@ -30,8 +31,8 @@ router.post('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
 	try {
-		let foundClass = await chirpsTable.getOne(req.params.id);
-		res.json(foundClass);
+		let foundChirp = await chirpsTable.getOne(req.params.id);
+		res.json(foundChirp);
 	} catch (err) {
 		console.log(err);
 		res.sendStatus(500);

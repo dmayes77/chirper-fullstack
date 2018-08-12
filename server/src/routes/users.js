@@ -1,48 +1,58 @@
 import { Router } from 'express';
 import Table from '../table';
 import { isLoggedIn } from '../middleware/auth.mw';
+import { executeQuery, callProcedure } from '../config/db';
 
 let router = Router();
-
-let users = new Table('users');
+let usersTable = new Table('users');
 
 router.get('/me', isLoggedIn, (req, res) => {
 	res.json(req.user);
-})
+});
 
-// router.get('/:id?', (req, res) => {
-// 	let id = req.params.id;
-// 	if (id) {
-// 		users.getOne(id).then(user => {
-// 			res.json(user);
-// 		})
-// 	} else {
-// 		users.getAll().then(users => {
-// 			res.json(users);
-// 		})
-// 	}
-// });
+router.get('/:id', (req, res) => {
+	usersTable
+		.getOne(req.params.id)
+		.then(results => {
+			return res.json(results);
+		})
+		.catch(err => {
+			console.log(err);
+			res.sendStatus(500);
+		});
+});
 
-// router.post('/', (req, res) => {
-// 	let user = req.body;
-// 	users.insert(user).then(id => {
-// 		res.json(id);
-// 	});
-// });
+router.get('/:name', (req, res) => {
+	executeQuery(`select id from users where name = '${req.params.username}'`)
+		.then(results => {
+			return res.json(results[0]);
+		})
+		.catch(err => {
+			console.log(err);
+			res.sendStatus(500);
+		});
+});
 
-// router.put('/:id/edit', (req, res) => {
-// 	let id = req.params.id;
-// 	users.update(id, req.body).then(results => {
-// 		res.json(results);
-// 	})
-// });
+router.get('/chirps/:userid', (req, res) => {
+	callProcedure('spGetAllUserChirps', [req.params.userid])
+		.then(results => {
+			return res.json(results[0]);
+		})
+		.catch(err => {
+			console.log(err);
+			res.sendStatus(500);
+		});
+});
 
-// router.delete("/:id", (req, res) => {
-// 	let id = req.params.id;
-// 	users.delete(id)
-// 		.then(() => {
-// 			res.sendStatus(200);
-// 		})
-// });
+router.get('/mentions/:userid', (req, res) => {
+	callProcedure('spGetAllUserMentions', [req.params.userid])
+		.then(results => {
+			return res.json(results[0]);
+		})
+		.catch(err => {
+			console.log(err);
+			res.sendStatus(500);
+		});
+});
 
 export default router;

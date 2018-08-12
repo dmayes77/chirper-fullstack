@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import IndexChirps from './indexChirps';
+import { Link } from 'react-router-dom';
+import ChirpCard from './indexChirps';
 import NewChirp from './newChirp';
 import * as chirpService from '../services/chirps';
 import 'isomorphic-fetch';
@@ -23,15 +24,15 @@ class Home extends Component {
 		const { chirps } = this.state;
 		return (
 			<Fragment>
+				<Link className="btn btn-primary float-right" to="/chirps/new">
+					Let's Chirp!
+				</Link>
+				<h3 className="my-4">Recent Posts</h3>
 				<div className="container">
-					<NewChirp />
-					<h3 className="my-4">Recent Posts</h3>
-					<div className="container">
-						<div id="list" className="list-group d-flex flex-column-reverse">
-							{chirps.map(chirp => {
-								return <IndexChirps key={chirp.id} chirp={chirp} />;
-							})}
-						</div>
+					<div id="list" className="list-group d-flex flex-column-reverse">
+						{chirps.map(chirp => {
+							return <ChirpCard key={chirp.id} chirp={chirp} />;
+						})}
 					</div>
 				</div>
 			</Fragment>

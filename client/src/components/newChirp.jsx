@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import * as chirpService from '../services/chirps';
 import 'isomorphic-fetch';
 import 'es6-promise';
@@ -24,76 +25,47 @@ class NewChirp extends Component {
 
 	handleForm(evt) {
 		evt.preventDefault();
-		chirpService.insert({ content: this.state.content });
-		this.clearForm();
-		location.reload();
+		chirpService
+			.insert({ content: this.state.content })
+			.then(this.props.history.push('/'))
+			.then(this.clearForm())
+			.then(location.reload());
 	}
 
 	render() {
 		return (
 			<Fragment>
-				<button
-					type="button"
-					className="btn btn-primary float-right"
-					data-toggle="modal"
-					data-target="#exampleModalCenter"
-				>
-					Let's Chirp!
-				</button>
-				<div
-					className="modal fade"
-					id="exampleModalCenter"
-					tabIndex="-1"
-					role="dialog"
-					aria-labelledby="exampleModalCenterTitle"
-					aria-hidden="true"
-				>
-					<div className="modal-dialog modal-dialog-centered" role="document">
-						<div className="modal-content">
-							<div className="modal-header">
-								<h5 className="modal-title" id="exampleModalCenterTitle">
-									Add New Chirp
-								</h5>
-								<button
-									type="button"
-									className="close"
-									data-dismiss="modal"
-									aria-label="Close"
-								>
-									<span aria-hidden="true">&times;</span>
-								</button>
+				<h3 className="my-4">Add New Chirp</h3>
+				<div className="container">
+					<div className="card mb-3">
+						<div className="card-body py-2">
+							<div className="float-left mr-2 h2">
+								<i className="far fa-user-circle" />
 							</div>
-							<div className="modal-body">
-								<form className="form-post">
-									<div className="form-group">
-										<input
-											name="content"
-											maxLength="150"
-											className="form-control"
-											placeholder="What's on your mind?"
-											onChange={e => this.handleInput(e)}
-											required
-										/>
-									</div>
-								</form>
+							<div className="d-flex align-items-baseline">
+								<h6 className="mb-0">@dmayes77</h6>
 							</div>
-							<div className="modal-footer">
-								<button
-									type="button"
-									className="btn btn-secondary btn-sm"
-									data-dismiss="modal"
-								>
-									Close
-								</button>
-								<button
-									type="submit"
-									className="btn btn-primary btn-sm"
-									onClick={e => this.handleForm(e)}
-									data-dismiss="modal"
-								>
-									Chirp!
-								</button>
-							</div>
+							<form className="form-post">
+								<div className="form-group">
+									<input
+										name="content"
+										maxLength="150"
+										className="form-control"
+										placeholder="What's on your mind?"
+										onChange={e => this.handleInput(e)}
+										required
+									/>
+								</div>
+							</form>
+						</div>
+						<div className="card-footer text-muted d-flex justify-content-around">
+							<Link className="small" to="/">
+								<i className="fas fa-times" /> Close
+							</Link>
+							<Link className="small" onClick={e => this.handleForm(e)} to="#">
+								<i className="far fa-save mr-1" />
+								Save
+							</Link>
 						</div>
 					</div>
 				</div>

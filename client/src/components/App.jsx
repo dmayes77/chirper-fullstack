@@ -2,11 +2,14 @@ import React, { Component, Fragment } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './home';
 import ShowChirp from './showChirp';
+import NewChirp from './newChirp';
 import EditChirp from './editChirp';
+import DeleteChirp from './deleteChirp';
 import PrivateRoute from './auth/privateRoute';
 import Login from './auth/login';
 import Logout from './auth/logout';
-import AuthButton from './auth/authButton';
+import Navigation from './nav';
+
 import 'isomorphic-fetch';
 import 'es6-promise';
 
@@ -15,24 +18,28 @@ class App extends Component {
 		return (
 			<Router>
 				<Fragment>
+					<Navigation />
 					<main role="main">
-						<div className="row jumbotron bg-primary justify-content-center">
+						<div className="row jumbotron bg-primary justify-content-center mt-5">
 							<h1 className="text-white display-3">Chirper</h1>
 						</div>
-						<AuthButton />
-						<Switch>
-							{/* Will eventually become a landing page */}
-							<Route exact path="/" component={Home} />
-							<Route exact path="/chirps" component={Home} />
-							<PrivateRoute exact path="/chirps/:id" component={ShowChirp} />
-							<PrivateRoute
-								exact
-								path="/chirps/:id/edit"
-								component={EditChirp}
-							/>
-							<Route path="/login" component={Login} />
-							<Route path="/logout" component={Logout} />
-						</Switch>
+						<div className="container">
+							<Switch>
+								{/* Will eventually become a landing page */}
+								<Route exact path="/" component={Home} />
+								<Route exact path="/chirps" component={Home} />
+								<Route path="/chirps/new" component={NewChirp} />
+								<Route exact path="/chirps/:id" component={ShowChirp} />
+								<Route exact path="/chirps/:id/edit" component={EditChirp} />
+								<Route
+									exact
+									path="/chirps/:id/delete"
+									component={DeleteChirp}
+								/>
+								<Route path="/login" component={Login} />
+								<Route path="/logout" component={Logout} />
+							</Switch>
+						</div>
 					</main>
 				</Fragment>
 			</Router>

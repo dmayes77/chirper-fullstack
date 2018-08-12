@@ -5,7 +5,7 @@ import moment from 'moment';
 import 'isomorphic-fetch';
 import 'es6-promise';
 
-class ShowChirp extends Component {
+class DeleteChirp extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -19,11 +19,28 @@ class ShowChirp extends Component {
 		});
 	}
 
+	handleDelete() {
+		chirpService
+			.destroy(this.props.match.params.id)
+			.then(this.props.history.push('/'))
+			.then(location.reload());
+	}
+
 	render() {
 		const { chirp } = this.state;
 		return (
 			<Fragment>
-				<h3 className="my-4">View Post</h3>
+				<button
+					id={chirp.id}
+					className="btn btn-danger float-right"
+					onClick={e => this.handleDelete(e)}
+				>
+					Yes, delete!
+				</button>
+				<h3 className="my-4">Delete Post</h3>
+				<h6 className="text-danger text-center">
+					Are you sure you want to delete this post? You can edit instead!
+				</h6>
 				<div className="container">
 					<div className="card mb-3">
 						<div className="card-body py-2">
@@ -39,6 +56,10 @@ class ShowChirp extends Component {
 							<small className="float-right">3 comments</small>
 						</div>
 						<div className="card-footer text-muted d-flex justify-content-around">
+							<Link className="small" to={`/chirps/${chirp.id}`}>
+								<i className="fas fa-ban mr-1" />
+								Cancel
+							</Link>
 							<Link
 								className="small"
 								to={{
@@ -49,17 +70,12 @@ class ShowChirp extends Component {
 								<i className="far fa-edit mr-1" />
 								Edit
 							</Link>
-							<Link className="small" to={`/chirps/${chirp.id}/delete`}>
-								<i className="fas fa-trash-alt mr-1" /> Delete
-							</Link>
 						</div>
 					</div>
 				</div>
-				<Link to={`/chirps`}>
-					<i className="fas fa-angle-double-left" /> Back
-				</Link>
 			</Fragment>
 		);
 	}
 }
-export default ShowChirp;
+
+export default DeleteChirp;

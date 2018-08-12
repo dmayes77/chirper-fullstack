@@ -26,25 +26,29 @@ class EditChirp extends Component {
 
 	handleForm(evt) {
 		evt.preventDefault();
-		chirpService.update(this.props.match.params.id, {
-			content: this.state.value
-		});
-		this.props.history.push('/');
-		location.reload();
+		chirpService
+			.update(this.props.match.params.id, {
+				content: this.state.value
+			})
+			.then(this.props.history.push(`/chirps/${this.props.match.params.id}`));
 	}
 
 	render() {
 		const { chirp } = this.state;
 		return (
 			<Fragment>
+				<h3 className="my-4">Edit Post</h3>
 				<div className="container">
 					<div className="card mb-3">
-						<div className="card-body">
-							<h6 className="card-title mb-0">@dmayes77</h6>
-							<p className="card-caption small">
+						<div className="card-body py-2">
+							<div className="float-left mr-2 h2">
+								<i className="far fa-user-circle" />
+							</div>
+							<h6 className="mb-0 small">@dmayes77</h6>
+							<p className="mb-0 small">
 								posted {moment(chirp._created).fromNow()}
 							</p>
-							<hr />
+							<hr className="mt-2 mb-3" />
 							<form className="form-post">
 								<div className="form-group">
 									<input
@@ -58,18 +62,15 @@ class EditChirp extends Component {
 								</div>
 							</form>
 						</div>
-						<div className="card-footer">
-							<Link to={`/chirps/${chirp.id}`}>
-								<i className="fas fa-angle-double-left" /> Cancel
+						<div className="card-footer text-muted d-flex justify-content-around">
+							<Link className="small" to={`/chirps/${chirp.id}`}>
+								<i className="fas fa-times mr-1" />
+								Close
 							</Link>
-							<button
-								type="submit"
-								className="btn btn-primary btn-sm float-right"
-								onClick={e => this.handleForm(e)}
-								data-dismiss="modal"
-							>
-								Update
-							</button>
+							<Link className="small" onClick={e => this.handleForm(e)} to="#">
+								<i className="far fa-save mr-1" />
+								Save
+							</Link>
 						</div>
 					</div>
 				</div>
