@@ -33,26 +33,4 @@ router.get('/:name', (req, res) => {
 		});
 });
 
-router.get('/chirps/:userid', (req, res) => {
-	callProcedure('spGetAllUserChirps', [req.params.userid])
-		.then(results => {
-			return res.json(results[0]);
-		})
-		.catch(err => {
-			console.log(err);
-			res.sendStatus(500);
-		});
-});
-
-router.get('/mentions/:userid', (req, res) => {
-	callProcedure('spGetAllUserMentions', [req.params.userid])
-		.then(results => {
-			return res.json(results[0]);
-		})
-		.catch(err => {
-			console.log(err);
-			res.sendStatus(500);
-		});
-});
-
 export default router;
