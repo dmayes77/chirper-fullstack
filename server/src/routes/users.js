@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import Table from '../table';
-import { isLoggedIn } from '../middleware/auth.mw';
+import { isLoggedIn, tokenMiddleware } from '../middleware/auth.mw';
 import { executeQuery, callProcedure } from '../config/db';
 
 let router = Router();
 let usersTable = new Table('users');
 
-router.get('/me', isLoggedIn, (req, res) => {
+router.get('/me', tokenMiddleware, isLoggedIn, (req, res) => {
 	res.json(req.user);
 });
 

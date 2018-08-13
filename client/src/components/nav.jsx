@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import { Link } from 'react-router';
 import AuthButton from './auth/authButton';
 
 class Navigation extends Component {
@@ -12,7 +11,6 @@ class Navigation extends Component {
 							Home
 						</a>
 					</div>
-
 					<AuthButton />
 				</div>
 			</Fragment>

@@ -16,11 +16,6 @@ class ChirpCard extends Component {
 		});
 	}
 
-	handleDelete(evt) {
-		chirpService.destroy(evt.target.id);
-		location.reload();
-	}
-
 	render() {
 		const { chirp } = this.props;
 		return (
