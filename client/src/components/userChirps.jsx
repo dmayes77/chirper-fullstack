@@ -1,33 +1,39 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import ChirpCard from './indexChirps';
-import NewChirp from './newChirp';
 import * as chirpService from '../services/chirps';
+import * as userService from '../services/user';
 import 'isomorphic-fetch';
 import 'es6-promise';
+import { clearScreenDown } from 'readline';
 
-class Home extends Component {
+class UserChirps extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			username: props.location.state.username,
 			chirps: []
 		};
 	}
 
 	componentDidMount() {
-		chirpService.all().then(chirps => {
+		chirpService.getAll(this.props.match.params.userid).then(chirps => {
 			this.setState({ chirps });
 		});
 	}
 
 	render() {
 		const { chirps } = this.state;
+
 		return (
 			<Fragment>
 				<Link className="btn btn-primary float-right" to="/chirps/new">
 					Let's Chirp!
 				</Link>
-				<h3 className="my-4">Recent Posts</h3>
+				<h3 className="my-4">
+					@{this.state.username}
+					's Posts
+				</h3>
 				<div className="container">
 					<div id="list" className="list-group d-flex flex-column-reverse">
 						{chirps.map((chirp, i) => {
@@ -40,4 +46,4 @@ class Home extends Component {
 	}
 }
 
-export default Home;
+export default UserChirps;

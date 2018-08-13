@@ -10,11 +10,11 @@ class ChirpCard extends Component {
 		super(props);
 	}
 
-	componentDidMount() {
-		chirpService.all().then(chirps => {
-			this.setState({ chirps });
-		});
-	}
+	// componentDidMount() {
+	// 	chirpService.all().then(chirps => {
+	// 		this.setState({ chirps });
+	// 	});
+	// }
 
 	render() {
 		const { chirp } = this.props;
@@ -22,13 +22,25 @@ class ChirpCard extends Component {
 			<Fragment>
 				<div className="card mb-3">
 					<div className="card-body py-2">
-						<div className="float-left mr-2 h2">
-							<i className="far fa-user-circle" />
+						<div className="row mx-0">
+							<div className="float-left mr-2 mb-0 h2 d-flex align-items-start">
+								<i className="far fa-user-circle" />
+							</div>
+							<div>
+								<Link
+									to={{
+										pathname: `/chirps/users/${chirp.userid}/`,
+										state: { username: chirp.username }
+									}}
+								>
+									@{chirp.username}
+								</Link>
+								<p className="mb-0 small">
+									posted {moment(chirp._created).fromNow()}
+								</p>
+							</div>
 						</div>
-						<h6 className="mb-0 small">@dmayes77</h6>
-						<p className="mb-0 small">
-							posted {moment(chirp._created).fromNow()}
-						</p>
+
 						<hr className="mt-2 mb-3" />
 						<h6 className="card-text">{chirp.content}</h6>
 						<small className="float-right">3 comments</small>

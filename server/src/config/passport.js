@@ -14,32 +14,37 @@ function configurePassport(app) {
         passwordField: 'password',
         session: false,
     }, async (email, password, done) => {
-        try {
-            // array destructuring. find() will return an array of results.
-            // destructuring the first (and hopefully only) result into the user variable
-						let [user] = await usersTable.find({ email });
+				// array destructuring. find() will return an array of results.
+				// destructuring the first (and hopefully only) result into the user variable
+				usersTable.find({ email })
+					.then((results) => results[0])
+					.then((user) => {
 						if (user && user.hash) {
 							checkPassword(password, user.hash)
-							.then((matches) => {
-								if (matches) {
-									let idObj = tokensTable.insert({
-										userid: user.id
-									});
-									let token = encode(idObj.id);
-									return done(null, { token });
-								} else {
-									return done(null, false, { message: 'Invalid credential' });
-								}
+								.then((matches) => {
+									if (matches) {
+										//password correct
+										tokensTable.insert({
+											userid: user.id
+										})
+											.then((idObj) => encode(idObj.id))
+											.then((token) => {
+												return done(null, { token })
+											});
+									} else {
+										//password incorrect
+										return done(null, false, { message: 'Invalid credentials' });
+									}
 								}).catch((err) => {
 									throw err;
-								});
+								})
 						} else {
 							return done(null, false, { message: 'Invalid credentials' });
 						}
-        } catch (err) {
-            return done(err);
-        }
-    }));
+					}).catch((err) => {
+						return done(err);
+					})
+			}));
 
     passport.use(new BearerStrategy(async (token, done) => {
         let tokenId = decode(token);

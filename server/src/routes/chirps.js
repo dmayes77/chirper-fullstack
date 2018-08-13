@@ -50,6 +50,17 @@ router.put('/:id', async (req, res) => {
 	}
 });
 
+router.get('/users/:userid', (req, res) => {
+	callProcedure('spGetAllUserChirps', [req.params.userid])
+		.then(results => {
+			return res.json(results[0]);
+		})
+		.catch(err => {
+			console.log(err);
+			res.sendStatus(500);
+		});
+});
+
 router.delete('/:id', async (req, res) => {
 	try {
 		// not concerned about getting a value back, just waiting on delete to finish
@@ -60,5 +71,7 @@ router.delete('/:id', async (req, res) => {
 		res.sendStatus(500);
 	}
 });
+
+
 
 export default router;

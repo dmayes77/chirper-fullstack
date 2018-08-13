@@ -5,6 +5,7 @@ import ShowChirp from './showChirp';
 import NewChirp from './newChirp';
 import EditChirp from './editChirp';
 import DeleteChirp from './deleteChirp';
+import UserChirps from './userChirps';
 import PrivateRoute from './auth/privateRoute';
 import Login from './auth/login';
 import Logout from './auth/logout';
@@ -28,11 +29,19 @@ class App extends Component {
 								{/* Will eventually become a landing page */}
 								<Route exact path="/" component={Home} />
 								<Route exact path="/chirps" component={Home} />
-								<Route path="/chirps/new" component={NewChirp} />
-								<Route exact path="/chirps/:id" component={ShowChirp} />
-								<Route exact path="/chirps/:id/edit" component={EditChirp} />
+								<PrivateRoute exact path="/chirps/new" component={NewChirp} />
 								<Route
 									exact
+									path="/chirps/users/:userid"
+									component={UserChirps}
+								/>
+								<Route exact path="/chirps/:id" component={ShowChirp} />
+								<PrivateRoute
+									exact
+									path="/chirps/:id/edit"
+									component={EditChirp}
+								/>
+								<PrivateRoute
 									path="/chirps/:id/delete"
 									component={DeleteChirp}
 								/>

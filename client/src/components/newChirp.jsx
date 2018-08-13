@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import * as chirpService from '../services/chirps';
+import * as userService from '../services/user';
 import 'isomorphic-fetch';
 import 'es6-promise';
 
@@ -9,7 +10,8 @@ class NewChirp extends Component {
 		super(props);
 		this.state = {
 			content: '',
-			chirps: []
+			chirps: [],
+			user: []
 		};
 
 		this.clearForm = () => {
@@ -19,32 +21,43 @@ class NewChirp extends Component {
 		};
 	}
 
+	componentDidMount() {
+		userService.me().then(user => {
+			this.setState({ user });
+		});
+	}
+
 	handleInput(evt) {
 		this.setState({ [evt.target.name]: evt.target.value });
 	}
 
 	handleForm(evt) {
+		const { content, user } = this.state;
 		evt.preventDefault();
 		chirpService
-			.insert({ content: this.state.content })
+			.insert({ content: content, userid: user.id, username: user.username })
 			.then(this.props.history.push('/'))
 			.then(this.clearForm())
 			.then(location.reload());
 	}
 
 	render() {
+		const { user } = this.state;
 		return (
 			<Fragment>
 				<h3 className="my-4">Add New Chirp</h3>
 				<div className="container">
 					<div className="card mb-3">
 						<div className="card-body py-2">
-							<div className="float-left mr-2 h2">
-								<i className="far fa-user-circle" />
+							<div className="row mx-0">
+								<div className="float-left mr-2 mb-0 h2 d-flex align-items-start">
+									<i className="far fa-user-circle" />
+								</div>
+								<div className="d-flex align-items-center">
+									<h6 className="mb-0">@{user.username}</h6>
+								</div>
 							</div>
-							<div className="d-flex align-items-baseline">
-								<h6 className="mb-0">@dmayes77</h6>
-							</div>
+							<hr className="mt-2 mb-3" />
 							<form className="form-post">
 								<div className="form-group">
 									<input
