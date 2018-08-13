@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import * as chirpService from '../services/chirps';
 import moment from 'moment';
 import 'isomorphic-fetch';
 import 'es6-promise';
@@ -9,12 +8,6 @@ class ChirpCard extends Component {
 	constructor(props) {
 		super(props);
 	}
-
-	// componentDidMount() {
-	// 	chirpService.all().then(chirps => {
-	// 		this.setState({ chirps });
-	// 	});
-	// }
 
 	render() {
 		const { chirp } = this.props;
@@ -27,20 +20,21 @@ class ChirpCard extends Component {
 								<i className="far fa-user-circle" />
 							</div>
 							<div>
-								<Link
-									to={{
-										pathname: `/chirps/users/${chirp.userid}/`,
-										state: { username: chirp.username }
-									}}
-								>
-									@{chirp.username}
-								</Link>
+								<h6 className="mb-0 small">
+									<Link
+										to={{
+											pathname: `/chirps/users/${chirp.userid}/`,
+											state: { username: chirp.username }
+										}}
+									>
+										@{chirp.username}
+									</Link>
+								</h6>
 								<p className="mb-0 small">
 									posted {moment(chirp._created).fromNow()}
 								</p>
 							</div>
 						</div>
-
 						<hr className="mt-2 mb-3" />
 						<h6 className="card-text">{chirp.content}</h6>
 						<small className="float-right">3 comments</small>

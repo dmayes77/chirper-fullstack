@@ -14,7 +14,6 @@ class ShowChirp extends Component {
 	}
 
 	componentDidMount() {
-		console.log(this.props);
 		chirpService.one(this.props.match.params.id).then(chirp => {
 			this.setState({ chirp });
 		});

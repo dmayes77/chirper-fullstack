@@ -2,10 +2,8 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import ChirpCard from './indexChirps';
 import * as chirpService from '../services/chirps';
-import * as userService from '../services/user';
 import 'isomorphic-fetch';
 import 'es6-promise';
-import { clearScreenDown } from 'readline';
 
 class UserChirps extends Component {
 	constructor(props) {
@@ -24,7 +22,6 @@ class UserChirps extends Component {
 
 	render() {
 		const { chirps } = this.state;
-
 		return (
 			<Fragment>
 				<Link className="btn btn-primary float-right" to="/chirps/new">
