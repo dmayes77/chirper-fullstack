@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import ChirpCard from './indexChirps';
+import ChirpCard from './chirpCard';
 import * as chirpService from '../services/chirps';
 import 'isomorphic-fetch';
 import 'es6-promise';

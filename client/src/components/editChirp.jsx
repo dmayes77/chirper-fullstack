@@ -37,6 +37,9 @@ class EditChirp extends Component {
 		const { chirp } = this.state;
 		return (
 			<Fragment>
+				<Link className="btn btn-primary float-right" to="/chirps/new">
+					Let's Chirp!
+				</Link>
 				<h3 className="my-4">Edit Post</h3>
 				<div className="container">
 					<div className="card mb-3">
