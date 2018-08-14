@@ -30,21 +30,10 @@ class App extends Component {
 								<Route exact path="/" component={Home} />
 								<Route exact path="/chirps" component={Home} />
 								<PrivateRoute exact path="/chirps/new" component={NewChirp} />
-								<Route
-									exact
-									path="/chirps/users/:userid"
-									component={UserChirps}
-								/>
 								<Route exact path="/chirps/:id" component={ShowChirp} />
-								<PrivateRoute
-									exact
-									path="/chirps/:id/edit"
-									component={EditChirp}
-								/>
-								<PrivateRoute
-									path="/chirps/:id/delete"
-									component={DeleteChirp}
-								/>
+								<Route exact path="/chirps/:id/edit" component={EditChirp} />
+								<Route path="/chirps/:id/delete" component={DeleteChirp} />
+								<Route path="/chirps/users/:userid" component={UserChirps} />
 								<Route path="/login" component={Login} />
 								<Route path="/logout" component={Logout} />
 							</Switch>

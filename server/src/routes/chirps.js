@@ -8,7 +8,7 @@ let router = Router();
 let chirpsTable = new Table('chirps');
 
 router.get('/', async (req, res) => {
-	console.log(req.user);
+	// console.log(req.user);
 	try {
 		let chirps = await chirpsTable.getAll();
 		res.json(chirps);
