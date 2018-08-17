@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
+import Footer from './footer';
 import moment from 'moment';
 import 'isomorphic-fetch';
 import 'es6-promise';
@@ -43,20 +44,7 @@ class ChirpCard extends Component {
 							Read
 						</Link>
 					</div>
-					<div className="card-footer text-muted d-flex justify-content-around">
-						<div className="small">
-							<i className="far fa-thumbs-up mr-1" />
-							Like
-						</div>
-						<div className="small">
-							<i className="far fa-comment-alt mr-1" />
-							Comment
-						</div>
-						<div className="small">
-							<i className="far fa-share-square mr-1" />
-							Share
-						</div>
-					</div>
+					<Footer chirp={chirp} />
 				</div>
 			</Fragment>
 		);

@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import * as chirpService from '../services/chirps';
+import Footer from './footer';
 import moment from 'moment';
 import 'isomorphic-fetch';
 import 'es6-promise';
@@ -54,21 +55,7 @@ class ShowChirp extends Component {
 							<h6 className="card-text">{chirp.content}</h6>
 							<small className="float-right">3 comments</small>
 						</div>
-						<div className="card-footer text-muted d-flex justify-content-around">
-							<Link
-								className="small"
-								to={{
-									pathname: `/chirps/${chirp.id}/edit`,
-									state: { content: chirp.content }
-								}}
-							>
-								<i className="far fa-edit mr-1" />
-								Edit
-							</Link>
-							<Link className="small" to={`/chirps/${chirp.id}/delete`}>
-								<i className="fas fa-trash-alt mr-1" /> Delete
-							</Link>
-						</div>
+						<Footer chirp={chirp} />
 					</div>
 				</div>
 				<Link to={`/chirps`}>

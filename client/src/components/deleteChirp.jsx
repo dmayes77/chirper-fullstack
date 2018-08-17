@@ -22,7 +22,7 @@ class DeleteChirp extends Component {
 	handleDelete() {
 		chirpService
 			.destroy(this.props.match.params.id)
-			.then(this.props.history.push('/'))
+			.then(this.props.history.push('/chirps'))
 			.then(location.reload());
 	}
 

@@ -34,7 +34,7 @@ class UserChirps extends Component {
 				<div className="container">
 					<div id="list" className="list-group d-flex flex-column-reverse">
 						{chirps.map((chirp, i) => {
-							return <ChirpCard key={i} chirp={chirp} />;
+							return <ChirpCard key={i} chirp={chirp} index={i} />;
 						})}
 					</div>
 				</div>
