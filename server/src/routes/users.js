@@ -7,7 +7,7 @@ import { clearScreenDown } from 'readline';
 let router = Router();
 let usersTable = new Table('users');
 
-router.get('/me', tokenMiddleware, isLoggedIn, (req, res) => {
+router.get('/me', (req, res) => {
 	res.json(req.user);
 });
 
@@ -24,7 +24,9 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/:username', (req, res) => {
-	executeQuery(`select id from ${usersTable} where username = '${req.params.username}'`)
+	executeQuery(
+		`select id from ${usersTable} where username = '${req.params.username}'`
+	)
 		.then(results => {
 			return res.json(results[0]);
 		})
@@ -33,8 +35,6 @@ router.get('/:username', (req, res) => {
 			res.sendStatus(500);
 		});
 });
-
-
 
 router.get('/mentions/:userid', (req, res) => {
 	callProcedure('spGetAllUserMentions', [req.params.userid])

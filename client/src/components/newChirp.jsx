@@ -37,8 +37,7 @@ class NewChirp extends Component {
 		chirpService
 			.insert({ content: content, userid: user.id, username: user.username })
 			.then(this.props.history.push('/'))
-			.then(this.clearForm())
-			.then(location.reload());
+			.then(this.clearForm());
 	}
 
 	render() {
@@ -65,6 +64,7 @@ class NewChirp extends Component {
 										maxLength="150"
 										className="form-control"
 										placeholder="What's on your mind?"
+										value={this.state.content}
 										onChange={e => this.handleInput(e)}
 										required
 									/>

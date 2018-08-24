@@ -9,7 +9,7 @@ class EditChirp extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			value: props.location.state.content, //passed in from Edit Link in showChirp
+			content: props.location.state.content, //passed in from Edit Link in showChirp
 			chirp: []
 		};
 	}
@@ -21,7 +21,7 @@ class EditChirp extends Component {
 	}
 
 	handleChange(evt) {
-		this.setState({ value: evt.target.value });
+		this.setState({ [evt.target.name]: evt.target.value });
 	}
 
 	handleForm(evt) {
@@ -67,7 +67,7 @@ class EditChirp extends Component {
 								<div className="form-group">
 									<input
 										name="content"
-										value={this.state.value}
+										value={this.state.content}
 										maxLength="150"
 										className="form-control"
 										onChange={e => this.handleChange(e)}

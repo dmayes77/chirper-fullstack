@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import * as chirpService from '../services/chirps';
-import Footer from './footer';
+import Footer from './cardFooter';
 import moment from 'moment';
 import 'isomorphic-fetch';
 import 'es6-promise';

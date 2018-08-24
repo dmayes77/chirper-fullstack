@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import AuthButton from './auth/authButton';
 
 class Navigation extends Component {
@@ -7,9 +8,9 @@ class Navigation extends Component {
 			<Fragment>
 				<div className="navbar fixed-top navbar-default navbar-dark bg-dark">
 					<div className="navbar-header">
-						<a className="navbar-brand" href="/">
+						<Link className="navbar-brand" to="/chirps">
 							Home
-						</a>
+						</Link>
 					</div>
 					<AuthButton />
 				</div>

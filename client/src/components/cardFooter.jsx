@@ -23,8 +23,6 @@ class Footer extends Component {
 	render() {
 		const { chirp } = this.props;
 		const { user } = this.state;
-		console.log(user.id);
-		console.log(chirp.userid);
 		if (userService.checkLogin() && user.id === chirp.userid) {
 			return (
 				<Fragment>
